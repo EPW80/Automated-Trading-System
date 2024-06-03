@@ -6,7 +6,7 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 
 ## Installation
 
-## Run Program Using Node.js
+### Run Program Using Node.js
 
 fetchData.js file can run using Node.js to execute program. Here’s how you can do it:
 
