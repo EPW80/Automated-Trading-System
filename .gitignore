@@ -4,6 +4,7 @@ node_modules/
 # Compiled JavaScript files
 *.js
 *.js.map
+chart.png
 
 # Environment variables
 .env
