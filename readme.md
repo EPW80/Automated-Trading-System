@@ -16,10 +16,8 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 
 ```sudo node fetchData.js```
 
-- Compile and Run the Script:
+- Compile and Run the server:
 
-```
-tsc 
-sudo node dist/interface.js
+```sudo tsc```
 
-```
+```sudo node dist/interface.js```
