@@ -4,7 +4,7 @@ Automated trading system specifically designed to trade two exchange-traded fund
 
 If the majority of these holdings are up, SOXL will rise, while SOXS will fall, and vice versa. In other words, the price movements of SOXL and SOXS are inversely related. Therefore, you can buy and sell one of them for a profit, provided you can accurately predict the direction of their movements without relying on short selling.
 
-## Installation based on Ubuntu environment
+## Installation based on WSL environment
 
 ### Run Program Using Node.js
 
@@ -16,10 +16,10 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 
 ```sudo node fetchData.js```
 
-Compile and Run the Script:
+- Compile and Run the Script:
 
 ```
 tsc 
-sudo node /home/epw/ETF/dist/interface.js
+sudo node dist/interface.js
 
 ```

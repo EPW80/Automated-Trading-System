@@ -4,7 +4,6 @@ node_modules/
 # Compiled JavaScript files
 *.js
 *.js.map
-chart.png
 
 # Environment variables
 .env
@@ -17,8 +16,7 @@ chart.png
 *.swp
 
 # Data files
-data.json
+
 
 # TypeScript build directories
-dist/
 build/
