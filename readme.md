@@ -4,20 +4,24 @@ Automated trading system specifically designed to trade two exchange-traded fund
 
 If the majority of these holdings are up, SOXL will rise, while SOXS will fall, and vice versa. In other words, the price movements of SOXL and SOXS are inversely related. Therefore, you can buy and sell one of them for a profit, provided you can accurately predict the direction of their movements without relying on short selling.
 
-## Installation based on WSL environment
+## Installation
 
-### Run Program Using Node.js
+### Fetch data
 
 - The fetchData.js file can run using Node.js to execute program. Here’s how you can do it:
 
 - Open terminal.
+
 - Navigate to the directory containing your fetchData.js file.
+
 - Run the following command:
 
-```sudo node fetchData.js```
+`sudo node fetchData.js`
 
-- Compile and Run the server:
+- Run the server(from root):
 
-```sudo tsc```
+`sudo node dist/server.js`
 
-```sudo node dist/interface.js```
+- Run frontend
+
+`npm start`
