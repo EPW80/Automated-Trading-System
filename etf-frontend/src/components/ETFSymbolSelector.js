@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "../App.css"; // Make sure to import your CSS file
 
 const ETFSymbolSelector = ({ setChartData }) => {
   const [symbol, setSymbol] = useState("SOXL");

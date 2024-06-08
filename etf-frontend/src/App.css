@@ -1,7 +1,15 @@
+/* Global Styles */
+body {
+  background-color: #f0f8ff;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
 .App {
   text-align: center;
 }
 
+/* Logo Animation */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -13,21 +21,6 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,4 +28,87 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Header Styling */
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(17px + 3vmin);
+  color: #f0f8ff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Link Styling */
+.App-link {
+  color: #61dafb;
+  text-decoration: none;
+}
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  background-color: #282c34;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Label Styling */
+label {
+  font-size: 1.5rem;
+  color: #f0f8ff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Input and Select Styling */
+input,
+select {
+  padding: 0.75rem;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Button Styling */
+button {
+  padding: 0.75rem 3rem;
+  font-size: 1.2rem;
+  color: #ffffff;
+  background-color: #61dafb;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+}
+
+button:hover {
+  background-color: #21a1f1;
+  transform: translateY(-2px);
+}
+
+button:active {
+  background-color: #1b8cd8;
+  transform: translateY(0);
 }
