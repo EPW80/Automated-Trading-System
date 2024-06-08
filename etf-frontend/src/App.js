@@ -9,7 +9,7 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>ETF Data Viewer</h1>
+        <h1>SOX STOX</h1>
       </header>
       <main>
         <ETFSymbolSelector setChartData={setChartData} />
