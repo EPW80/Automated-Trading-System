@@ -7,6 +7,8 @@ body {
 
 .App {
   text-align: center;
+  font-family: 'Roboto', sans-serif;
+  padding: 0.3rem;
 }
 
 /* Logo Animation */
@@ -42,6 +44,16 @@ body {
   color: #f0f8ff;
   border-radius: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.App-header h1 {
+  margin-bottom: 0.5rem; /* Adds space between the titles */
+}
+
+.App-header h5 {
+  margin-top: 0;
+  font-size: calc(10px + 2vmin); /* Adjust the font size as needed */
+  color: #f0f8ff;
 }
 
 /* Link Styling */

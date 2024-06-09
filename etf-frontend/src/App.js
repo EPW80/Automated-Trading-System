@@ -27,11 +27,26 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>SOX STOX</h1>
+        <h5>(automated trading)</h5>
       </header>
       <main>
         <ETFSymbolSelector setChartData={setChartData} />
         {chartData.length > 0 && <ChartComponent data={chartData} />}
-        <button onClick={handleRunBacktest}>Run Backtest</button>
+        <button
+          onClick={handleRunBacktest}
+          style={{
+            padding: '0.75rem 2rem',
+            fontSize: '1.2rem',
+            backgroundColor: '#61dafb',
+            border: 'none',
+            borderRadius: '0.5rem',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s',
+            marginTop: '1rem',
+          }}
+        >
+          Run Backtest
+        </button>
         {backtestResults && <BacktestingResults results={backtestResults} />}
       </main>
     </div>
