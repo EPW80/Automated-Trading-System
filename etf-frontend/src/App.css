@@ -52,7 +52,7 @@ body {
 
 .App-header h5 {
   margin-top: 0;
-  font-size: calc(10px + 2vmin); /* Adjust the font size as needed */
+  font-size: calc(6px + 2vmin); /* Adjust the font size as needed */
   color: #f0f8ff;
 }
 
@@ -74,7 +74,7 @@ form {
   border-radius: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 90%;
-  max-width: 500px;
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }

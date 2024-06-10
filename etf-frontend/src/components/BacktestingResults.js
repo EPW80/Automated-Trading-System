@@ -12,7 +12,7 @@ const BacktestingResults = ({ results }) => {
         <h3>Transactions:</h3>
         <table style={{ margin: '0 auto', borderCollapse: 'collapse', width: '100%', textAlign: 'left' }}>
           <thead>
-            <tr style={{ backgroundColor: '#61dafb', color: 'white' }}>
+            <tr style={{ backgroundColor: '#282c34', color: 'white' }}>
               <th style={{ padding: '0.5rem' }}>Date</th>
               <th style={{ padding: '0.5rem' }}>Type</th>
               <th style={{ padding: '0.5rem' }}>Shares</th>
