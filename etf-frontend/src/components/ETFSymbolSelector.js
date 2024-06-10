@@ -23,30 +23,42 @@ const ETFSymbolSelector = ({ setChartData }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Symbol:
-        <select value={symbol} onChange={(e) => setSymbol(e.target.value)}>
+      <div className="form-group">
+        <label htmlFor="symbol">Symbol:</label>
+        <select
+          id="symbol"
+          value={symbol}
+          onChange={(e) => setSymbol(e.target.value)}
+          className="form-control"
+        >
           <option value="SOXL">SOXL</option>
           <option value="SOXS">SOXS</option>
         </select>
-      </label>
-      <label>
-        Start Date:
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="start-date">Start Date:</label>
         <input
+          id="start-date"
           type="date"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
+          className="form-control"
         />
-      </label>
-      <label>
-        End Date:
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="end-date">End Date:</label>
         <input
+          id="end-date"
           type="date"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
+          className="form-control"
         />
-      </label>
-      <button type="submit">Fetch Data</button>
+      </div>
+
+      <button type="submit" className="btn btn-primary">Fetch Data</button>
     </form>
   );
 };

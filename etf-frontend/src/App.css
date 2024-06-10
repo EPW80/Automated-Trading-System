@@ -79,7 +79,11 @@ form {
   margin-right: auto;
 }
 
-/* Label Styling */
+.form-group {
+  width: 100%;
+  text-align: left;
+}
+
 label {
   font-size: 1.5rem;
   color: #f0f8ff;
@@ -89,19 +93,24 @@ label {
   width: 100%;
 }
 
-/* Input and Select Styling */
 input,
 select {
   padding: 0.75rem;
   font-size: 1rem;
   margin-top: 0.5rem;
   border-radius: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid #aaa; /* Slightly darker border for better contrast */
   width: 100%;
   box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Button Styling */
+input:hover,
+select:hover {
+  border-color: #61dafb;
+  box-shadow: 0 0 8px rgba(97, 218, 251, 0.5);
+}
+
 button {
   padding: 0.75rem 3rem;
   font-size: 1.2rem;
@@ -110,7 +119,7 @@ button {
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-top: 1rem;
 }
@@ -118,6 +127,7 @@ button {
 button:hover {
   background-color: #21a1f1;
   transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
 
 button:active {
