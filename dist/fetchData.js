@@ -14,7 +14,7 @@ import path from "path";
 const tickers = ["SOXL", "SOXS"];
 // Define the date range
 const startDate = "2021-01-01";
-const endDate = "2024-05-31";
+const endDate = "2024-06-13";
 // Function to fetch data from Yahoo Finance
 function fetchData(ticker) {
     return __awaiter(this, void 0, void 0, function* () {

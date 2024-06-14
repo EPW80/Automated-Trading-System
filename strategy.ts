@@ -1,3 +1,6 @@
+import fs from 'fs';
+import { parse } from 'json2csv';
+
 export interface MarketDataEntry {
   date: string;
   open: string;
@@ -17,10 +20,7 @@ export interface Trade {
 }
 
 // Function to calculate Simple Moving Average (SMA)
-export function calculateSMA(
-  data: MarketDataEntry[],
-  windowSize: number
-): number[] {
+export function calculateSMA(data: MarketDataEntry[], windowSize: number): number[] {
   let sma: number[] = [];
   for (let i = 0; i < data.length; i++) {
     if (i < windowSize - 1) {
@@ -103,3 +103,28 @@ export function runTradingStrategy(
     percentageReturn,
   };
 }
+
+// Function to generate CSV log file
+export function generateCSVLogFile(transactions: Trade[], summary: { totalGainOrLoss: number; percentageReturn: number; balance: number }) {
+  const fields = ["date", "type", "price", "shares", "gainOrLoss", "balance"];
+  const csvData = parse(transactions, { fields });
+  const summaryRow = `\nSummary,,,,${summary.totalGainOrLoss},${summary.percentageReturn},${summary.balance}`;
+  fs.writeFileSync("trading_log.csv", csvData + summaryRow);
+}
+
+// Example usage
+(async () => {
+  const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
+  const marketData = data["SOXL"]; // Use your desired symbol here
+  const initialBalance = 100000;
+  const shortWindow = 10;
+  const longWindow = 50;
+
+  const result = runTradingStrategy(marketData, shortWindow, longWindow, initialBalance);
+  const { balance, transactions, totalGainOrLoss, percentageReturn } = result;
+  console.log(`Total Gain/Loss: $${totalGainOrLoss.toFixed(2)}`);
+  console.log(`Percentage Return: ${percentageReturn.toFixed(2)}%`);
+  console.log(`Final Balance: $${balance.toFixed(2)}`);
+
+  generateCSVLogFile(transactions, { totalGainOrLoss, percentageReturn, balance });
+})();

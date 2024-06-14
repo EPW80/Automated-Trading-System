@@ -1,14 +1,14 @@
 import axios from "axios";
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 
 // Define the tickers
 const tickers = ["SOXL", "SOXS"];
 
 // Define the date range
 const startDate = "2021-01-01";
-const endDate = "2024-05-31";
+const endDate = "2024-06-13";
 
 // Function to fetch data from Yahoo Finance
 async function fetchData(ticker: string) {
@@ -23,7 +23,8 @@ async function fetchData(ticker: string) {
       .split("\n")
       .slice(1)
       .map((line: string) => {
-        const [date, open, high, low, close, adjClose, volume] = line.split(",");
+        const [date, open, high, low, close, adjClose, volume] =
+          line.split(",");
         return { date, open, high, low, close, adjClose, volume };
       });
     return data;
