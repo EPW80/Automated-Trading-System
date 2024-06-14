@@ -8,7 +8,7 @@ const tickers = ["SOXL", "SOXS"];
 
 // Define the date range
 const startDate = "2021-01-01";
-const endDate = "2024-06-13";
+const endDate = "2024-06-14";
 
 // Function to fetch data from Yahoo Finance
 async function fetchData(ticker: string) {

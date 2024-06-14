@@ -35,7 +35,7 @@ body {
 /* Header Styling */
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 5vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,12 +47,12 @@ body {
 }
 
 .App-header h1 {
-  margin-bottom: 0.5rem; /* Adds space between the titles */
+  margin-bottom: 0rem; /* Adds space between the titles */
 }
 
 .App-header h5 {
   margin-top: 0;
-  font-size: calc(6px + 2vmin); /* Adjust the font size as needed */
+  font-size: calc(5px + 1.5vmin); /* Adjust the font size as needed */
   color: #f0f8ff;
 }
 
