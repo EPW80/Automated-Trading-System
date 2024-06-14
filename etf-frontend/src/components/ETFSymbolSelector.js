@@ -6,9 +6,11 @@ const ETFSymbolSelector = ({ setChartData }) => {
   const [symbol, setSymbol] = useState("SOXL");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post("http://localhost:5000/getData", {
         symbol,
@@ -18,13 +20,15 @@ const ETFSymbolSelector = ({ setChartData }) => {
       setChartData(response.data);
     } catch (error) {
       console.error("Error fetching data", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="form-container">
       <div className="form-group">
-        <label htmlFor="symbol">Symbol:</label>
+        <label htmlFor="symbol" className="form-label">Symbol:</label>
         <select
           id="symbol"
           value={symbol}
@@ -37,7 +41,7 @@ const ETFSymbolSelector = ({ setChartData }) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="start-date">Start Date:</label>
+        <label htmlFor="start-date" className="form-label">Start Date:</label>
         <input
           id="start-date"
           type="date"
@@ -48,7 +52,7 @@ const ETFSymbolSelector = ({ setChartData }) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="end-date">End Date:</label>
+        <label htmlFor="end-date" className="form-label">End Date:</label>
         <input
           id="end-date"
           type="date"
@@ -58,7 +62,9 @@ const ETFSymbolSelector = ({ setChartData }) => {
         />
       </div>
 
-      <button type="submit" className="btn btn-primary">Fetch Data</button>
+      <button type="submit" className="btn btn-primary" disabled={loading}>
+        {loading ? "Fetching..." : "Fetch Data"}
+      </button>
     </form>
   );
 };

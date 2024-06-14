@@ -63,7 +63,7 @@ body {
 }
 
 /* Form Styling */
-form {
+.form-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -134,3 +134,9 @@ button:active {
   background-color: #1b8cd8;
   transform: translateY(0);
 }
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+

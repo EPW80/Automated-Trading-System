@@ -43,6 +43,7 @@ const ChartComponent = ({ data }) => {
             pointRadius: 3,
             pointBackgroundColor: "rgba(75, 192, 192, 1)",
             pointBorderColor: "#fff",
+            fill: true,
           },
         ],
       },
@@ -57,6 +58,7 @@ const ChartComponent = ({ data }) => {
               family: "'Roboto', sans-serif",
               weight: "bold",
             },
+            color: '#333',
           },
           tooltip: {
             callbacks: {
@@ -78,6 +80,7 @@ const ChartComponent = ({ data }) => {
                 size: 14,
                 family: "'Roboto', sans-serif",
               },
+              color: '#333',
             },
           },
         },
@@ -91,6 +94,10 @@ const ChartComponent = ({ data }) => {
                 size: 16,
                 family: "'Roboto', sans-serif",
               },
+              color: '#333',
+            },
+            ticks: {
+              color: '#333',
             },
           },
           y: {
@@ -102,6 +109,10 @@ const ChartComponent = ({ data }) => {
                 size: 16,
                 family: "'Roboto', sans-serif",
               },
+              color: '#333',
+            },
+            ticks: {
+              color: '#333',
             },
           },
         },

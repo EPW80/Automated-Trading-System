@@ -7,20 +7,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import fs from 'fs';
-import { parse } from 'json2csv';
+import fs from "fs";
+import { parse } from "json2csv";
 // Function to calculate Simple Moving Average (SMA)
 export function calculateSMA(data, windowSize) {
-    let sma = [];
+    const sma = [];
     for (let i = 0; i < data.length; i++) {
         if (i < windowSize - 1) {
             sma.push(NaN); // Not enough data to calculate SMA, use NaN or another default value
         }
         else {
-            let sum = 0;
-            for (let j = i; j > i - windowSize; j--) {
-                sum += parseFloat(data[j].close);
-            }
+            const sum = data
+                .slice(i - windowSize + 1, i + 1)
+                .reduce((acc, entry) => acc + parseFloat(entry.close), 0);
             sma.push(sum / windowSize);
         }
     }
@@ -36,35 +35,48 @@ export function runTradingStrategy(data, shortWindow, longWindow, initialBalance
     const shortSMA = calculateSMA(data, shortWindow);
     const longSMA = calculateSMA(data, longWindow);
     for (let i = longWindow - 1; i < data.length; i++) {
+        const entry = data[i];
+        const { date, open, high, low, close, adjClose } = entry;
+        const price = parseFloat(close);
         if (shortSMA[i] > longSMA[i] && shortSMA[i - 1] <= longSMA[i - 1]) {
             // Buy signal
-            let sharesToBuy = Math.floor(balance / parseFloat(data[i].close));
+            const sharesToBuy = Math.floor(balance / price);
             if (sharesToBuy > 0) {
-                purchasePrice = parseFloat(data[i].close);
+                purchasePrice = price;
                 sharesOwned += sharesToBuy;
                 balance -= sharesToBuy * purchasePrice;
                 transactions.push({
-                    date: data[i].date,
+                    date,
                     type: "buy",
                     price: purchasePrice,
                     shares: sharesToBuy,
                     gainOrLoss: 0,
+                    balance,
+                    open: parseFloat(open),
+                    high: parseFloat(high),
+                    low: parseFloat(low),
+                    adjClose: parseFloat(adjClose),
                 });
             }
         }
         else if (shortSMA[i] < longSMA[i] && shortSMA[i - 1] >= longSMA[i - 1]) {
             // Sell signal
             if (sharesOwned > 0) {
-                const sellPrice = parseFloat(data[i].close);
+                const sellPrice = price;
                 const gainOrLoss = sharesOwned * (sellPrice - purchasePrice);
                 totalGainOrLoss += gainOrLoss;
                 balance += sharesOwned * sellPrice;
                 transactions.push({
-                    date: data[i].date,
+                    date,
                     type: "sell",
                     price: sellPrice,
                     shares: sharesOwned,
                     gainOrLoss,
+                    balance,
+                    open: parseFloat(open),
+                    high: parseFloat(high),
+                    low: parseFloat(low),
+                    adjClose: parseFloat(adjClose),
                 });
                 sharesOwned = 0;
             }
@@ -81,22 +93,42 @@ export function runTradingStrategy(data, shortWindow, longWindow, initialBalance
 }
 // Function to generate CSV log file
 export function generateCSVLogFile(transactions, summary) {
-    const fields = ["date", "type", "price", "shares", "gainOrLoss", "balance"];
+    const fields = [
+        "date",
+        "type",
+        "price",
+        "shares",
+        "gainOrLoss",
+        "balance",
+        "open",
+        "high",
+        "low",
+        "adjClose",
+    ];
     const csvData = parse(transactions, { fields });
-    const summaryRow = `\nSummary,,,,${summary.totalGainOrLoss},${summary.percentageReturn},${summary.balance}`;
+    const summaryRow = `\nSummary,,,,${summary.totalGainOrLoss},${summary.percentageReturn},${summary.balance},,,,`;
     fs.writeFileSync("trading_log.csv", csvData + summaryRow);
 }
 // Example usage
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
-    const marketData = data["SOXL"]; // Use your desired symbol here
-    const initialBalance = 100000;
-    const shortWindow = 10;
-    const longWindow = 50;
-    const result = runTradingStrategy(marketData, shortWindow, longWindow, initialBalance);
-    const { balance, transactions, totalGainOrLoss, percentageReturn } = result;
-    console.log(`Total Gain/Loss: $${totalGainOrLoss.toFixed(2)}`);
-    console.log(`Percentage Return: ${percentageReturn.toFixed(2)}%`);
-    console.log(`Final Balance: $${balance.toFixed(2)}`);
-    generateCSVLogFile(transactions, { totalGainOrLoss, percentageReturn, balance });
+    try {
+        const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
+        const marketData = data["SOXL"]; // Use your desired symbol here
+        const initialBalance = 100000;
+        const shortWindow = 10;
+        const longWindow = 50;
+        const result = runTradingStrategy(marketData, shortWindow, longWindow, initialBalance);
+        const { balance, transactions, totalGainOrLoss, percentageReturn } = result;
+        console.log(`Total Gain/Loss: $${totalGainOrLoss.toFixed(2)}`);
+        console.log(`Percentage Return: ${percentageReturn.toFixed(2)}%`);
+        console.log(`Final Balance: $${balance.toFixed(2)}`);
+        generateCSVLogFile(transactions, {
+            totalGainOrLoss,
+            percentageReturn,
+            balance,
+        });
+    }
+    catch (error) {
+        console.error("An error occurred:", error);
+    }
 }))();
