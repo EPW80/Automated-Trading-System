@@ -28,7 +28,9 @@ const ETFSymbolSelector = ({ setChartData }) => {
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <div className="form-group">
-        <label htmlFor="symbol" className="form-label">Symbol:</label>
+        <label htmlFor="symbol" className="form-label">
+          Symbol:
+        </label>
         <select
           id="symbol"
           value={symbol}
@@ -41,7 +43,9 @@ const ETFSymbolSelector = ({ setChartData }) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="start-date" className="form-label">Start Date:</label>
+        <label htmlFor="start-date" className="form-label">
+          Start Date:
+        </label>
         <input
           id="start-date"
           type="date"
@@ -52,7 +56,9 @@ const ETFSymbolSelector = ({ setChartData }) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="end-date" className="form-label">End Date:</label>
+        <label htmlFor="end-date" className="form-label">
+          End Date:
+        </label>
         <input
           id="end-date"
           type="date"

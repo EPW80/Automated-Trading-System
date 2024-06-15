@@ -38,12 +38,13 @@ app.post("/runStrategy", (req, res) => {
     longWindow,
     initialBalance
   );
-  const { transactions, totalGainOrLoss, percentageReturn, balance } = result;
+  const { transactions, totalGainOrLoss, percentageReturn, finalBalance } =
+    result;
 
   generateCSVLogFile(transactions, {
     totalGainOrLoss,
     percentageReturn,
-    balance,
+    finalBalance,
   });
 
   res.json(result);

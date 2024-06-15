@@ -28,18 +28,23 @@ export interface Trade {
 export function calculateSMA(
   data: MarketDataEntry[],
   windowSize: number
-): number[] {
-  const sma: number[] = [];
-  for (let i = 0; i < data.length; i++) {
-    if (i < windowSize - 1) {
-      sma.push(NaN); // Not enough data to calculate SMA, use NaN or another default value
-    } else {
-      const sum = data
-        .slice(i - windowSize + 1, i + 1)
-        .reduce((acc, entry) => acc + parseFloat(entry.close), 0);
-      sma.push(sum / windowSize);
-    }
+): (number | null)[] {
+  let sum = 0;
+  const sma: (number | null)[] = new Array(windowSize - 1).fill(null); // Fill the initial array with nulls
+
+  // Calculate the sum for the first window
+  for (let i = 0; i < windowSize; i++) {
+    sum += parseFloat(data[i].close);
   }
+  sma.push(sum / windowSize);
+
+  // Calculate the rest using a rolling sum
+  for (let i = windowSize; i < data.length; i++) {
+    sum -= parseFloat(data[i - windowSize].close);
+    sum += parseFloat(data[i].close);
+    sma.push(sum / windowSize);
+  }
+
   return sma;
 }
 
@@ -55,6 +60,7 @@ export function runTradingStrategy(
   transactions: Trade[];
   totalGainOrLoss: number;
   percentageReturn: number;
+  finalBalance: number;
 } {
   let balance = initialBalance;
   let sharesOwned = 0;
@@ -70,51 +76,58 @@ export function runTradingStrategy(
     const { date, open, high, low, close, adjClose } = entry;
     const price = parseFloat(close);
 
-    if (shortSMA[i] > longSMA[i] && shortSMA[i - 1] <= longSMA[i - 1]) {
-      // Buy signal
-      const sharesToBuy = Math.floor(balance / price);
-      if (sharesToBuy > 0) {
-        purchasePrice = price;
-        sharesOwned += sharesToBuy;
-        balance -= sharesToBuy * purchasePrice;
-        transactions.push({
-          date,
-          type: "buy",
-          price: purchasePrice,
-          shares: sharesToBuy,
-          gainOrLoss: 0, // Gain or loss is not applicable for buy transactions
-          balance,
-          open: parseFloat(open),
-          high: parseFloat(high),
-          low: parseFloat(low),
-          adjClose: parseFloat(adjClose),
-        });
-      }
-    } else if (shortSMA[i] < longSMA[i] && shortSMA[i - 1] >= longSMA[i - 1]) {
-      // Sell signal
-      if (sharesOwned > 0) {
-        const sellPrice = price;
-        const gainOrLoss = sharesOwned * (sellPrice - purchasePrice);
-        totalGainOrLoss += gainOrLoss;
-        balance += sharesOwned * sellPrice;
-        transactions.push({
-          date,
-          type: "sell",
-          price: sellPrice,
-          shares: sharesOwned,
-          gainOrLoss,
-          balance,
-          open: parseFloat(open),
-          high: parseFloat(high),
-          low: parseFloat(low),
-          adjClose: parseFloat(adjClose),
-        });
-        sharesOwned = 0;
+    if (shortSMA[i] !== null && longSMA[i] !== null) {
+      if (shortSMA[i]! > longSMA[i]! && shortSMA[i - 1]! <= longSMA[i - 1]!) {
+        // Buy signal
+        const sharesToBuy = Math.floor(balance / price);
+        if (sharesToBuy > 0) {
+          purchasePrice = price;
+          sharesOwned += sharesToBuy;
+          balance -= sharesToBuy * purchasePrice;
+          transactions.push({
+            date,
+            type: "buy",
+            price: purchasePrice,
+            shares: sharesToBuy,
+            gainOrLoss: 0, // Gain or loss is not applicable for buy transactions
+            balance,
+            open: parseFloat(open),
+            high: parseFloat(high),
+            low: parseFloat(low),
+            adjClose: parseFloat(adjClose),
+          });
+        }
+      } else if (
+        shortSMA[i]! < longSMA[i]! &&
+        shortSMA[i - 1]! >= longSMA[i - 1]!
+      ) {
+        // Sell signal
+        if (sharesOwned > 0) {
+          const sellPrice = price;
+          const gainOrLoss = sharesOwned * (sellPrice - purchasePrice);
+          totalGainOrLoss += gainOrLoss;
+          balance += sharesOwned * sellPrice;
+          transactions.push({
+            date,
+            type: "sell",
+            price: sellPrice,
+            shares: sharesOwned,
+            gainOrLoss,
+            balance,
+            open: parseFloat(open),
+            high: parseFloat(high),
+            low: parseFloat(low),
+            adjClose: parseFloat(adjClose),
+          });
+          sharesOwned = 0;
+        }
       }
     }
   }
 
   const percentageReturn = (totalGainOrLoss / initialBalance) * 100;
+  const finalBalance =
+    balance + sharesOwned * parseFloat(data[data.length - 1].close); // Correct final balance calculation
 
   return {
     balance,
@@ -122,6 +135,7 @@ export function runTradingStrategy(
     transactions,
     totalGainOrLoss,
     percentageReturn,
+    finalBalance,
   };
 }
 
@@ -131,7 +145,7 @@ export function generateCSVLogFile(
   summary: {
     totalGainOrLoss: number;
     percentageReturn: number;
-    balance: number;
+    finalBalance: number;
   }
 ) {
   const fields = [
@@ -147,7 +161,7 @@ export function generateCSVLogFile(
     "adjClose",
   ];
   const csvData = parse(transactions, { fields });
-  const summaryRow = `\nSummary,,,,${summary.totalGainOrLoss},${summary.percentageReturn},${summary.balance},,,,`;
+  const summaryRow = `\nSummary,,,,${summary.totalGainOrLoss},${summary.percentageReturn},${summary.finalBalance},,,,`;
   fs.writeFileSync("trading_log.csv", csvData + summaryRow);
 }
 
@@ -166,15 +180,21 @@ export function generateCSVLogFile(
       longWindow,
       initialBalance
     );
-    const { balance, transactions, totalGainOrLoss, percentageReturn } = result;
+    const {
+      balance,
+      transactions,
+      totalGainOrLoss,
+      percentageReturn,
+      finalBalance,
+    } = result;
     console.log(`Total Gain/Loss: $${totalGainOrLoss.toFixed(2)}`);
     console.log(`Percentage Return: ${percentageReturn.toFixed(2)}%`);
-    console.log(`Final Balance: $${balance.toFixed(2)}`);
+    console.log(`Final Balance: $${finalBalance.toFixed(2)}`);
 
     generateCSVLogFile(transactions, {
       totalGainOrLoss,
       percentageReturn,
-      balance,
+      finalBalance,
     });
   } catch (error) {
     console.error("An error occurred:", error);
