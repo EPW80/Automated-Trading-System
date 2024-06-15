@@ -59,3 +59,7 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 - View Results:
 
 - Check the backtesting results, including total gain/loss, percentage return, and detailed transaction history.
+
+### Demo
+
+[Watch the Demo](https://www.loom.com/share/ef116ccd1b5440e78bd01551af0e83ab?sid=d608e38d-9b75-4845-bbce-71d4c2b98cf5)
