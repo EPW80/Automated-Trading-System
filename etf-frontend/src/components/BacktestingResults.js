@@ -1,4 +1,5 @@
 import React from "react";
+import "../App.css"; // Ensure this CSS file is created and imported
 
 const BacktestingResults = ({ results }) => {
   if (!results) return null;
@@ -22,63 +23,66 @@ const BacktestingResults = ({ results }) => {
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "2rem" }}>
-      <div style={{ marginTop: "1rem" }}>
+    <div className="results-container">
+      <div className="results-header">
         <h2>Backtesting Results</h2>
-        <p>Total Gain/Loss: ${totalGainOrLoss}</p>
-        <p>Percentage Return: {percentageReturn}%</p>
+        {/* <p>Total Gain/Loss: ${totalGainOrLoss}</p>
+        <p>Percentage Return: {percentageReturn}%</p> */}
+      </div>
+      <div className="transactions-section">
         <h3>Transactions:</h3>
-        <table
-          style={{
-            margin: "0 auto",
-            borderCollapse: "collapse",
-            width: "100%",
-            textAlign: "left",
-          }}
-        >
+        <table className="transactions-table">
           <thead>
-            <tr style={{ backgroundColor: "#282c34", color: "white" }}>
-              <th style={{ padding: "0.5rem" }}>Date</th>
-              <th style={{ padding: "0.5rem" }}>Type</th>
-              <th style={{ padding: "0.5rem" }}>Shares</th>
-              <th style={{ padding: "0.5rem" }}>Price</th>
-              <th style={{ padding: "0.5rem" }}>Gain/Loss</th>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Shares</th>
+              <th>Price</th>
+              <th>Gain/Loss</th>
             </tr>
           </thead>
           <tbody>
             {results.transactions.map((tx, index) => (
               <tr
                 key={index}
-                style={{
-                  backgroundColor: index % 2 === 0 ? "#f0f8ff" : "white",
-                }}
+                className={index % 2 === 0 ? "even-row" : "odd-row"}
               >
-                <td style={{ padding: "0.5rem" }}>{tx.date}</td>
-                <td style={{ padding: "0.5rem" }}>{tx.type}</td>
-                <td style={{ padding: "0.5rem" }}>{tx.shares}</td>
-                <td style={{ padding: "0.5rem" }}>${tx.price.toFixed(2)}</td>
-                <td style={{ padding: "0.5rem" }}>
-                  ${tx.gainOrLoss.toFixed(2)}
-                </td>
+                <td>{tx.date}</td>
+                <td>{tx.type}</td>
+                <td>{tx.shares}</td>
+                <td>${tx.price.toFixed(2)}</td>
+                <td>${tx.gainOrLoss.toFixed(2)}</td>
               </tr>
             ))}
-            <tr style={{ backgroundColor: "#d3d3d3" }}>
-              <td style={{ padding: "0.5rem" }}>{summaryRow.date}</td>
-              <td style={{ padding: "0.5rem" }}>{summaryRow.type}</td>
-              <td style={{ padding: "0.5rem" }}>{summaryRow.shares}</td>
-              <td style={{ padding: "0.5rem" }}>{summaryRow.price}</td>
-              <td style={{ padding: "0.5rem" }}>
-                ${summaryRow.gainOrLoss.toFixed(2)}
-              </td>
+            <tr className="summary-row">
+              <td>{summaryRow.date}</td>
+              <td>{summaryRow.type}</td>
+              <td>{summaryRow.shares}</td>
+              <td>{summaryRow.price}</td>
+              <td>${summaryRow.gainOrLoss.toFixed(2)}</td>
             </tr>
           </tbody>
         </table>
-        <div style={{ marginTop: "2rem" }}>
-          <h3>Summary</h3>
-          <p>Initial Balance: $100,000.00</p>
-          <p>Final Balance: ${finalBalance}</p>
-          <p>Total Gain/Loss: ${totalGainOrLoss}</p>
-          <p>Percentage Return: {percentageReturn}%</p>
+      </div>
+      <div className="summary-container">
+        <h3>Summary</h3>
+        <div className="summary-table">
+          <div className="summary-row">
+            <span className="summary-label">Initial Balance:</span>
+            <span className="summary-value">$100,000.00</span>
+          </div>
+          <div className="summary-row">
+            <span className="summary-label">Final Balance:</span>
+            <span className="summary-value">${finalBalance}</span>
+          </div>
+          <div className="summary-row">
+            <span className="summary-label">Total Gain/Loss:</span>
+            <span className="summary-value">${totalGainOrLoss}</span>
+          </div>
+          <div className="summary-row">
+            <span className="summary-label">Percentage Return:</span>
+            <span className="summary-value">{percentageReturn}%</span>
+          </div>
         </div>
       </div>
     </div>

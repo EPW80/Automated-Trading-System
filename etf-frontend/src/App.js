@@ -28,7 +28,7 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>SOX STOX</h1>
-        <h5>(soxl and soxs automated trading)</h5>
+        <h5>(SOXL and SOXS automated trading)</h5>
       </header>
       <main>
         <ETFSymbolSelector setChartData={setChartData} />
