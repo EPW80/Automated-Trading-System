@@ -40,8 +40,8 @@ export function runTradingStrategy(data, shortWindow, longWindow, initialBalance
         const { date, open, high, low, close, adjClose } = entry;
         const price = parseFloat(close);
         if (shortSMA[i] !== null && longSMA[i] !== null) {
+            // Check for buy signal: short SMA crosses above long SMA
             if (shortSMA[i] > longSMA[i] && shortSMA[i - 1] <= longSMA[i - 1]) {
-                // Buy signal
                 const sharesToBuy = Math.floor(balance / price);
                 if (sharesToBuy > 0) {
                     purchasePrice = price;
@@ -60,10 +60,10 @@ export function runTradingStrategy(data, shortWindow, longWindow, initialBalance
                         adjClose: parseFloat(adjClose),
                     });
                 }
+                // Check for sell signal: short SMA crosses below long SMA
             }
             else if (shortSMA[i] < longSMA[i] &&
                 shortSMA[i - 1] >= longSMA[i - 1]) {
-                // Sell signal
                 if (sharesOwned > 0) {
                     const sellPrice = price;
                     const gainOrLoss = sharesOwned * (sellPrice - purchasePrice);
@@ -87,7 +87,7 @@ export function runTradingStrategy(data, shortWindow, longWindow, initialBalance
         }
     }
     const percentageReturn = (totalGainOrLoss / initialBalance) * 100;
-    const finalBalance = balance + sharesOwned * parseFloat(data[data.length - 1].close); // Correct final balance calculation
+    const finalBalance = balance + sharesOwned * parseFloat(data[data.length - 1].close); // Include value of remaining shares
     return {
         balance,
         sharesOwned,

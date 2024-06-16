@@ -36,6 +36,8 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 
 `cd etf-frontend`
 
+`npm install`
+
 `npm start`
 
 ### Access the application
@@ -44,22 +46,26 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 
 ### Usage
 
-- Select ETF Symbol:
+ Select ETF Symbol:
 
 - Use the dropdown to select either SOXL or SOXS.
-- Enter Date Range:
+
+ Enter Date Range:
 
 - Provide the start and end dates for fetching historical data.
-- View Data:
+
+ View Data:
 
 - Fetch and view the historical data for the selected ETF within the specified date range.
-- Run Backtest:
+
+ Run Backtest:
 
 - Execute the backtesting feature to evaluate the trading strategy's performance based on historical data.
-- View Results:
+
+ View Results:
 
 - Check the backtesting results, including total gain/loss, percentage return, and detailed transaction history.
 
 ### Demo
 
-[Watch the Demo](https://www.loom.com/share/ef116ccd1b5440e78bd01551af0e83ab?sid=d608e38d-9b75-4845-bbce-71d4c2b98cf5)
+[Application Demo](https://www.loom.com/share/ef116ccd1b5440e78bd01551af0e83ab?sid=d608e38d-9b75-4845-bbce-71d4c2b98cf5)

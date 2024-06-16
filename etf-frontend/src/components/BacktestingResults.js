@@ -1,5 +1,5 @@
 import React from "react";
-import "../App.css"; // Ensure this CSS file is created and imported
+import "../App.css";
 
 const BacktestingResults = ({ results }) => {
   if (!results) return null;

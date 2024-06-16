@@ -1,6 +1,7 @@
 import fs from "fs";
 import { parse } from "json2csv";
 
+// Define the structure of market data entries
 export interface MarketDataEntry {
   date: string;
   open: string;
@@ -11,6 +12,7 @@ export interface MarketDataEntry {
   volume: string;
 }
 
+// Define the structure of trade transactions
 export interface Trade {
   date: string;
   type: string;
@@ -77,8 +79,8 @@ export function runTradingStrategy(
     const price = parseFloat(close);
 
     if (shortSMA[i] !== null && longSMA[i] !== null) {
+      // Check for buy signal: short SMA crosses above long SMA
       if (shortSMA[i]! > longSMA[i]! && shortSMA[i - 1]! <= longSMA[i - 1]!) {
-        // Buy signal
         const sharesToBuy = Math.floor(balance / price);
         if (sharesToBuy > 0) {
           purchasePrice = price;
@@ -97,11 +99,11 @@ export function runTradingStrategy(
             adjClose: parseFloat(adjClose),
           });
         }
+        // Check for sell signal: short SMA crosses below long SMA
       } else if (
         shortSMA[i]! < longSMA[i]! &&
         shortSMA[i - 1]! >= longSMA[i - 1]!
       ) {
-        // Sell signal
         if (sharesOwned > 0) {
           const sellPrice = price;
           const gainOrLoss = sharesOwned * (sellPrice - purchasePrice);
@@ -127,7 +129,7 @@ export function runTradingStrategy(
 
   const percentageReturn = (totalGainOrLoss / initialBalance) * 100;
   const finalBalance =
-    balance + sharesOwned * parseFloat(data[data.length - 1].close); // Correct final balance calculation
+    balance + sharesOwned * parseFloat(data[data.length - 1].close); // Include value of remaining shares
 
   return {
     balance,

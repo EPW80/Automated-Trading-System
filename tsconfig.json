@@ -1,14 +1,33 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist"
+    // Specify ECMAScript target version
+    "target": "es2016", // Targeting ES2016 ensures compatibility with most modern environments.
+
+    // Specify module code generation
+    "module": "esnext", // Using ESNext modules allows for dynamic import() statements.
+
+    // Enable node module resolution
+    "moduleResolution": "node", // Node module resolution is suitable for Node.js projects.
+
+    // Enable all strict type-checking options
+    "strict": true, // Enabling all strict type-checking options for better code quality and fewer bugs.
+
+    // Enable interoperability between CommonJS and ES Modules
+    "esModuleInterop": true, // Allows default imports from modules with no default export, improving compatibility with CommonJS modules.
+
+    // Skip type checking of all declaration files
+    "skipLibCheck": true, // Skip type checking of declaration files to speed up compilation.
+
+    // Ensure file name casing matches exactly
+    "forceConsistentCasingInFileNames": true, // Ensure case sensitivity in file names for consistency across different file systems.
+
+    // Redirect output structure to the directory
+    "outDir": "./dist" // Output directory for compiled files, keeping source files separate from compiled files.
   },
-  "include": ["./**/*.ts"],
-  "exclude": ["node_modules"]
+
+  // Include all TypeScript files in the project
+  "include": ["./**/*.ts"], // Include all TypeScript files in the project directory and its subdirectories.
+
+  // Exclude specific files or directories
+  "exclude": ["node_modules"] // Exclude the node_modules directory to speed up the compilation process by avoiding unnecessary checks.
 }
