@@ -26,8 +26,6 @@ const BacktestingResults = ({ results }) => {
     <div className="results-container">
       <div className="results-header">
         <h2>Backtesting Results</h2>
-        {/* <p>Total Gain/Loss: ${totalGainOrLoss}</p>
-        <p>Percentage Return: {percentageReturn}%</p> */}
       </div>
       <div className="transactions-section">
         <h3>Transactions:</h3>

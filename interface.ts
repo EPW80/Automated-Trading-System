@@ -6,7 +6,6 @@ import "chartjs-adapter-date-fns";
 // Load the data from the JSON file
 const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
 
-// Define the interface for market data
 interface MarketData {
   date: string;
   open: string;
