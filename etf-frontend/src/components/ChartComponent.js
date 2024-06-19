@@ -49,6 +49,7 @@ const ChartComponent = ({ data }) => {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false, // Ensures the chart fills the container
         plugins: {
           title: {
             display: true,
@@ -137,7 +138,11 @@ const ChartComponent = ({ data }) => {
     };
   }, [chartConfig]);
 
-  return <canvas ref={chartRef}></canvas>;
+  return (
+    <div className="chart-container">
+      <canvas ref={chartRef}></canvas>
+    </div>
+  );
 };
 
 export default ChartComponent;
