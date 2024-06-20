@@ -2,8 +2,10 @@ import React from "react";
 import "../App.css";
 
 const BacktestingResults = ({ results }) => {
+  // If no results are provided, return null to render nothing
   if (!results) return null;
 
+  // Format the results values for display
   const totalGainOrLoss = results.totalGainOrLoss
     ? results.totalGainOrLoss.toFixed(2)
     : "0.00";
@@ -14,6 +16,7 @@ const BacktestingResults = ({ results }) => {
     ? results.finalBalance.toFixed(2)
     : "0.00";
 
+  // Create a summary row for the transactions table
   const summaryRow = {
     date: "Summary",
     type: "",
@@ -24,9 +27,12 @@ const BacktestingResults = ({ results }) => {
 
   return (
     <div className="results-container">
+      {/* Header for the backtesting results */}
       <div className="results-header">
         <h2>Backtesting Results</h2>
       </div>
+
+      {/* Section displaying the list of transactions */}
       <div className="transactions-section">
         <h3>Transactions:</h3>
         <table className="transactions-table">
@@ -62,6 +68,8 @@ const BacktestingResults = ({ results }) => {
           </tbody>
         </table>
       </div>
+
+      {/* Summary section displaying overall results */}
       <div className="summary-container">
         <h3>Summary</h3>
         <div className="summary-table">

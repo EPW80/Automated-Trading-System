@@ -1,31 +1,41 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "../App.css"; // Make sure to import your CSS file
+import "../App.css"; // Import the CSS file
 
+// ETFSymbolSelector component to allow users to select ETF symbols and date ranges
 const ETFSymbolSelector = ({ setChartData }) => {
+  // State variables to manage form inputs and loading/error states
   const [symbol, setSymbol] = useState("SOXL");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  // Handle form submission
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
+    event.preventDefault(); // Prevent default form submission behavior
+    setLoading(true); // Set loading state to true
+    setError(null); // Clear any previous errors
+
     try {
+      // Send a POST request to fetch data
       const response = await axios.post("http://localhost:5000/getData", {
         symbol,
         startDate,
         endDate,
       });
-      setChartData(response.data);
+      setChartData(response.data); // Set the fetched data to the chart data
     } catch (error) {
+      // Handle any errors that occur during data fetching
+      setError("Failed to fetch data. Please try again.");
       console.error("Error fetching data", error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Set loading state to false
     }
   };
 
   return (
+    // Form for selecting ETF symbol and date range
     <form onSubmit={handleSubmit} className="form-container">
       <div className="form-group">
         <label htmlFor="symbol" className="form-label">
@@ -71,6 +81,9 @@ const ETFSymbolSelector = ({ setChartData }) => {
       <button type="submit" className="btn btn-primary" disabled={loading}>
         {loading ? "Fetching..." : "Fetch Data"}
       </button>
+
+      {/* Display error message if there is an error */}
+      {error && <p className="error-message">{error}</p>}
     </form>
   );
 };
