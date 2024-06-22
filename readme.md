@@ -24,7 +24,7 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 
 - The fetchData.js script downloads historical data for SOXL and SOXS from Yahoo Finance and saves it in JSON format.
 
-- Run the following command in the terminal:
+- Run the following command in the terminal to fetch the data:
 
 `sudo node fetchData.js`
 
