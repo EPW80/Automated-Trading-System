@@ -163,7 +163,7 @@ button:disabled {
 /* Ensure the chart container takes up full space and scales properly */
 .chart-container {
   width: 100%;
-  height: 100%; /* Ensure it takes full height */
+  height: 100%; /* takes full height */
 }
 
 .chart-container canvas {
