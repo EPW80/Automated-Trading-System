@@ -2,9 +2,14 @@ import fs from "fs";
 import { createCanvas } from "canvas";
 import Chart from "chart.js/auto";
 import "chartjs-adapter-date-fns";
+import { JSONDataAccess } from "./adapters/JSONDataAccess.js";
+import { JSONDataAdapter } from "./adapters/JSONDataAdapter.js";
+import { IDataAccess, MarketDataEntry } from "./adapters/IDataAccess.js";
 
-// Load the data from the JSON file
-const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
+const jsonDataAccess = new JSONDataAccess();
+const dataAccess: IDataAccess<MarketDataEntry> = new JSONDataAdapter(
+  jsonDataAccess
+);
 
 interface MarketData {
   date: string;
@@ -35,7 +40,7 @@ async function main() {
     `Description: ${symbol} is an ETF focused on semiconductor companies with 3x leverage.`
   );
 
-  const recentData: MarketData[] = data[symbol];
+  const recentData: MarketDataEntry[] = await dataAccess.request(symbol);
   const lastEntry = recentData[recentData.length - 1];
   const prevEntry = recentData[recentData.length - 2];
 
@@ -92,9 +97,13 @@ async function main() {
  * @param {string} startDate - The start date for the chart data.
  * @param {string} endDate - The end date for the chart data.
  */
-function generateChart(symbol: string, startDate: string, endDate: string) {
-  const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
-  const marketData = data[symbol].filter(
+async function generateChart(
+  symbol: string,
+  startDate: string,
+  endDate: string
+) {
+  const data = await dataAccess.request(symbol);
+  const marketData = data.filter(
     (entry: MarketData) =>
       new Date(entry.date) >= new Date(startDate) &&
       new Date(entry.date) <= new Date(endDate)

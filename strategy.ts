@@ -91,7 +91,7 @@ export function runTradingStrategy(
             type: "buy",
             price: purchasePrice,
             shares: sharesToBuy,
-            gainOrLoss: 0, // Gain or loss is not applicable for buy transactions
+            gainOrLoss: 0, // Initialize gainOrLoss to 0
             balance,
             open: parseFloat(open),
             high: parseFloat(high),
@@ -167,7 +167,7 @@ export function generateCSVLogFile(
   fs.writeFileSync("trading_log.csv", csvData + summaryRow);
 }
 
-// Example usage
+// Run the trading strategy
 (async () => {
   try {
     const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));

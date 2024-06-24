@@ -11,8 +11,10 @@ import fs from "fs";
 import { createCanvas } from "canvas";
 import Chart from "chart.js/auto";
 import "chartjs-adapter-date-fns";
-// Load the data from the JSON file
-const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
+import { JSONDataAccess } from "./adapters/JSONDataAccess.js";
+import { JSONDataAdapter } from "./adapters/JSONDataAdapter.js";
+const jsonDataAccess = new JSONDataAccess();
+const dataAccess = new JSONDataAdapter(jsonDataAccess);
 // Main function to run the program
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -28,7 +30,7 @@ function main() {
         ]);
         console.log(`You selected: ${symbol}`);
         console.log(`Description: ${symbol} is an ETF focused on semiconductor companies with 3x leverage.`);
-        const recentData = data[symbol];
+        const recentData = yield dataAccess.request(symbol);
         const lastEntry = recentData[recentData.length - 1];
         const prevEntry = recentData[recentData.length - 2];
         console.log(`Most recent date: ${lastEntry.date}`);
@@ -76,105 +78,107 @@ function main() {
  * @param {string} endDate - The end date for the chart data.
  */
 function generateChart(symbol, startDate, endDate) {
-    const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
-    const marketData = data[symbol].filter((entry) => new Date(entry.date) >= new Date(startDate) &&
-        new Date(entry.date) <= new Date(endDate));
-    const dates = marketData.map((entry) => entry.date);
-    const prices = marketData.map((entry) => parseFloat(entry.close)); // Ensure prices are numbers
-    const canvas = createCanvas(800, 400);
-    const ctx = canvas.getContext("2d");
-    new Chart(canvas, {
-        type: "line",
-        data: {
-            labels: dates,
-            datasets: [
-                {
-                    label: `${symbol} Price`,
-                    data: prices,
-                    borderColor: "rgba(75, 192, 192, 1)",
-                    backgroundColor: "rgba(75, 192, 192, 0.2)",
-                    borderWidth: 2,
-                    pointRadius: 3,
-                    pointBackgroundColor: "rgba(75, 192, 192, 1)",
-                    pointBorderColor: "#fff",
-                },
-            ],
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: `${symbol} Price Chart`,
-                    font: {
-                        size: 18,
-                        family: "'Roboto', sans-serif",
-                        weight: "bold",
+    return __awaiter(this, void 0, void 0, function* () {
+        const data = yield dataAccess.request(symbol);
+        const marketData = data.filter((entry) => new Date(entry.date) >= new Date(startDate) &&
+            new Date(entry.date) <= new Date(endDate));
+        const dates = marketData.map((entry) => entry.date);
+        const prices = marketData.map((entry) => parseFloat(entry.close)); // Ensure prices are numbers
+        const canvas = createCanvas(800, 400);
+        const ctx = canvas.getContext("2d");
+        new Chart(canvas, {
+            type: "line",
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: `${symbol} Price`,
+                        data: prices,
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        backgroundColor: "rgba(75, 192, 192, 0.2)",
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointBackgroundColor: "rgba(75, 192, 192, 1)",
+                        pointBorderColor: "#fff",
                     },
-                    color: "#333",
-                },
-                tooltip: {
-                    callbacks: {
-                        label: (context) => {
-                            let label = context.dataset.label || "";
-                            if (label) {
-                                label += ": ";
-                            }
-                            label += parseFloat(context.parsed.y).toFixed(2);
-                            return label;
-                        },
-                    },
-                },
-                legend: {
-                    display: true,
-                    position: "top",
-                    labels: {
+                ],
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `${symbol} Price Chart`,
                         font: {
-                            size: 14,
+                            size: 18,
                             family: "'Roboto', sans-serif",
+                            weight: "bold",
                         },
                         color: "#333",
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                let label = context.dataset.label || "";
+                                if (label) {
+                                    label += ": ";
+                                }
+                                label += parseFloat(context.parsed.y).toFixed(2);
+                                return label;
+                            },
+                        },
+                    },
+                    legend: {
+                        display: true,
+                        position: "top",
+                        labels: {
+                            font: {
+                                size: 14,
+                                family: "'Roboto', sans-serif",
+                            },
+                            color: "#333",
+                        },
+                    },
+                },
+                scales: {
+                    x: {
+                        type: "time",
+                        time: {
+                            unit: "day",
+                        },
+                        title: {
+                            display: true,
+                            text: "Date",
+                            font: {
+                                size: 16,
+                                family: "'Roboto', sans-serif",
+                            },
+                            color: "#333",
+                        },
+                        ticks: {
+                            color: "#333",
+                        },
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: "Price",
+                            font: {
+                                size: 16,
+                                family: "'Roboto', sans-serif",
+                            },
+                            color: "#333",
+                        },
+                        ticks: {
+                            color: "#333",
+                        },
                     },
                 },
             },
-            scales: {
-                x: {
-                    type: "time",
-                    time: {
-                        unit: "day",
-                    },
-                    title: {
-                        display: true,
-                        text: "Date",
-                        font: {
-                            size: 16,
-                            family: "'Roboto', sans-serif",
-                        },
-                        color: "#333",
-                    },
-                    ticks: {
-                        color: "#333",
-                    },
-                },
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: "Price",
-                        font: {
-                            size: 16,
-                            family: "'Roboto', sans-serif",
-                        },
-                        color: "#333",
-                    },
-                    ticks: {
-                        color: "#333",
-                    },
-                },
-            },
-        },
+        });
+        fs.writeFileSync("chart.png", canvas.toBuffer("image/png"));
+        console.log("Price graph saved as chart.png");
     });
-    fs.writeFileSync("chart.png", canvas.toBuffer("image/png"));
-    console.log("Price graph saved as chart.png");
 }
 main();

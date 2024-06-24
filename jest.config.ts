@@ -1,5 +1,6 @@
 import type { Config } from 'jest';
 
+// jest.config.ts
 const config: Config = {
   preset: 'ts-jest',
   testEnvironment: 'node',

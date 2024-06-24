@@ -115,7 +115,7 @@ export function generateCSVLogFile(transactions, summary) {
     const summaryRow = `\nSummary,,,,${summary.totalGainOrLoss},${summary.percentageReturn},${summary.finalBalance},,,,`;
     fs.writeFileSync("trading_log.csv", csvData + summaryRow);
 }
-// Example usage
+// Run the trading strategy
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));

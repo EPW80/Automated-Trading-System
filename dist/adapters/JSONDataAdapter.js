@@ -7,9 +7,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { JSONDataAccess } from "./adapters/JSONDataAccess";
-const tickers = ["SOXL", "SOXS"];
-const jsonDataAccess = new JSONDataAccess();
-(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield jsonDataAccess.fetchAndSaveData(tickers);
-}))();
+// Definea class that implements the IDataAccess interface
+export class JSONDataAdapter {
+    // Constructor that takes an instance of the JSONDataAccess class
+    constructor(adaptee) {
+        this.adaptee = adaptee;
+    }
+    // async request method that calls the getMarketData method of the adaptee
+    request(symbol) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.adaptee.getMarketData(symbol);
+        });
+    }
+}

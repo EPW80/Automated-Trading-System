@@ -1,4 +1,4 @@
-# ETF Automated Trading application
+# SOXL/SOXS Automated Trading application
 
 This automated trading system is specifically designed to trade two exchange-traded funds (ETFs): SOXL and SOXS. These ETFs are highly volatile due to their 3x leverage. The top holdings of these ETFs primarily consist of semiconductor companies, including NVIDIA (NVDA), Broadcom (AVGO), Advanced Micro Devices (AMD), Qualcomm (QCOM), Micron Technology (MU), Intel (INTC), and Microchip Technology (MCHP).
 
