@@ -3,7 +3,7 @@ import ETFSymbolSelector from "./components/ETFSymbolSelector";
 import ChartComponent from "./components/ChartComponent";
 import BarChartComponent from "./components/BarChartComponent";
 import BacktestingResults from "./components/BacktestingResults";
-import { pubSub } from "./pubsub/PubSub"; // Correct import path
+import { pubSub } from "./pubsub/PubSub";
 import "./App.css";
 import axios from "axios";
 

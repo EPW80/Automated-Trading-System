@@ -24,45 +24,44 @@ ChartJS.register(
 
 const BarChartComponent = () => {
   const [chartData, setChartData] = useState([]);
-
-  const chartRef = useRef(null); // Reference to the canvas element
-  const chartInstanceRef = useRef(null); // Reference to the chart instance
+  const chartRef = useRef(null);
+  const chartInstanceRef = useRef(null);
 
   // Memoize the chart configuration to avoid unnecessary re-renders
   const chartConfig = useMemo(() => {
     return {
-      type: "bar", // Define the chart type
+      type: "bar",
       data: {
-        labels: chartData.map((entry) => entry.date), // Map dates for x-axis labels
+        labels: chartData.map((entry) => entry.date),
         datasets: [
           {
-            label: "Volume", // Label for the dataset
-            data: chartData.map((entry) => entry.volume), // Map volume data for y-axis
-            backgroundColor: "rgba(75, 192, 192, 0.2)", // Bar color
-            borderColor: "rgba(75, 192, 192, 1)", // Border color
-            borderWidth: 1, // Border width
-            hoverBackgroundColor: "rgba(75, 192, 192, 0.4)", // Bar color on hover
-            hoverBorderColor: "rgba(75, 192, 192, 1)", // Border color on hover
+            label: "Volume",
+            data: chartData.map((entry) => entry.volume),
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+            hoverBackgroundColor: "rgba(75, 192, 192, 0.4)",
+            hoverBorderColor: "rgba(75, 192, 192, 1)",
           },
         ],
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false, // Ensures the chart fills the container
+        maintainAspectRatio: false,
         animation: {
-          duration: 1000, // Animation duration in milliseconds
-          easing: "easeOutBounce", // Easing function for the animation
+          duration: 1000,
+          easing: "easeOutBounce",
         },
         plugins: {
           title: {
             display: true,
-            text: "Volume Chart", // Chart title
+            text: "Volume Chart",
             font: {
               size: 18,
               family: "'Roboto', sans-serif",
               weight: "bold",
             },
-            color: "#333", // Title color
+            color: "#333",
           },
           tooltip: {
             callbacks: {
@@ -71,7 +70,7 @@ const BarChartComponent = () => {
                 if (label) {
                   label += ": ";
                 }
-                label += parseInt(context.parsed.y).toLocaleString(); // Format tooltip value
+                label += parseInt(context.parsed.y).toLocaleString();
                 return label;
               },
             },
@@ -84,73 +83,73 @@ const BarChartComponent = () => {
                 size: 14,
                 family: "'Roboto', sans-serif",
               },
-              color: "#333", // Legend color
+              color: "#333",
             },
           },
         },
         scales: {
           x: {
-            type: "category", // X-axis type
+            type: "category",
             title: {
               display: true,
-              text: "Date", // X-axis title
+              text: "Date",
               font: {
                 size: 16,
                 family: "'Roboto', sans-serif",
               },
-              color: "#333", // X-axis title color
+              color: "#333",
             },
             ticks: {
-              color: "#333", // X-axis ticks color
+              color: "#333",
             },
           },
           y: {
-            beginAtZero: true, // Start y-axis from zero
+            beginAtZero: true,
             title: {
               display: true,
-              text: "Volume", // Y-axis title
+              text: "Volume",
               font: {
                 size: 16,
                 family: "'Roboto', sans-serif",
               },
-              color: "#333", // Y-axis title color
+              color: "#333",
             },
             ticks: {
-              color: "#333", // Y-axis ticks color
-              callback: (value) => value.toLocaleString(), // Format y-axis ticks
+              color: "#333",
+              callback: (value) => value.toLocaleString(),
             },
           },
         },
         hover: {
-          mode: "nearest", // Highlight the nearest data point
-          intersect: true, // Only trigger when hovering directly over a point
-          animationDuration: 400, // Hover animation duration
+          mode: "nearest",
+          intersect: true,
+          animationDuration: 400,
         },
       },
     };
   }, [chartData]);
 
   useEffect(() => {
-    if (!chartRef.current) return; // If chartRef is not set, do nothing
+    if (!chartRef.current) return;
 
-    const ctx = chartRef.current.getContext("2d"); // Get the context for drawing
+    const ctx = chartRef.current.getContext("2d");
     if (chartInstanceRef.current) {
-      chartInstanceRef.current.destroy(); // Destroy previous chart instance if it exists
+      chartInstanceRef.current.destroy();
     }
 
-    chartInstanceRef.current = new ChartJS(ctx, chartConfig); // Create new chart instance
+    chartInstanceRef.current = new ChartJS(ctx, chartConfig);
 
     return () => {
       if (chartInstanceRef.current) {
-        chartInstanceRef.current.destroy(); // Clean up the chart instance on component unmount
+        chartInstanceRef.current.destroy();
       }
     };
-  }, [chartConfig]); // Re-run effect when chartConfig changes
+  }, [chartConfig]);
 
   useEffect(() => {
     // Subscribe to data changes
-    const handleDataChange = (data) => {
-      setChartData(data.data);
+    const handleDataChange = ({ data }) => {
+      setChartData(data);
     };
 
     pubSub.subscribe("dataChanged", handleDataChange);
@@ -163,7 +162,7 @@ const BarChartComponent = () => {
 
   return (
     <div className="chart-container">
-      <canvas ref={chartRef}></canvas> {/* Canvas element for Chart.js */}
+      <canvas ref={chartRef}></canvas>
     </div>
   );
 };

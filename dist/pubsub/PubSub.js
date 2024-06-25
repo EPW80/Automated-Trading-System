@@ -1,4 +1,3 @@
-// src/pubsub/PubSub.ts
 export class PubSub {
     constructor() {
         this.subscribers = {};

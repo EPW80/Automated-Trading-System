@@ -1,4 +1,3 @@
-// src/adapters/IDataAccess.ts
 export interface MarketDataEntry {
   date: string;
   open: string;
