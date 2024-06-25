@@ -14,6 +14,7 @@ import cors from "cors";
 import { runTradingStrategy, generateCSVLogFile, } from "./strategy.js";
 import { JSONDataAccess } from "./adapters/JSONDataAccess.js";
 import { JSONDataAdapter } from "./adapters/JSONDataAdapter.js";
+import { pubSub } from "./pubsub/PubSub.js"; // Import the pubSub
 // Create an instance of the data access class
 const jsonDataAccess = new JSONDataAccess();
 const dataAccess = new JSONDataAdapter(jsonDataAccess);
@@ -31,6 +32,8 @@ app.post("/getData", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const marketData = yield dataAccess.request(symbol);
         const filteredData = marketData.filter((entry) => new Date(entry.date) >= new Date(startDate) &&
             new Date(entry.date) <= new Date(endDate));
+        // Publish the data change event
+        pubSub.publish("dataChanged", { symbol, data: filteredData });
         // Send filtered market data as JSON response
         res.json(filteredData);
     }
@@ -54,6 +57,8 @@ app.post("/runStrategy", (req, res) => __awaiter(void 0, void 0, void 0, functio
             percentageReturn,
             finalBalance,
         });
+        // Publish the data change event
+        pubSub.publish("dataChanged", { symbol, data: marketData });
         // Send the result as JSON response
         res.json(result);
     }
