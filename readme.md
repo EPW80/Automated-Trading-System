@@ -11,6 +11,7 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 - Backtesting: Evaluates the performance of the trading strategy through backtesting.
 - Interactive Frontend: Provides a user-friendly interface for selecting symbols, viewing data, and running backtests.
 - Graphical Visualization: Displays price charts for the selected ETFs over a specified date range.
+- Publisher-Subscriber Pattern: Implements the Pub/Sub pattern to update the user interface with new data dynamically.
 
 ## Installation
 
@@ -20,24 +21,35 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 - A code editor like Visual Studio Code.
 - Git installed on your system.
 
-### Fetch historical data
+### Setup
 
-- The fetchData.js script downloads historical data for SOXL and SOXS from Yahoo Finance and saves it in JSON format.
+- Clone the repository:
 
-- Run the following command in the terminal to fetch the data:
+`git clone <repository_url>`
+`cd ETF`
 
-`sudo node fetchData.js`
-
-- Run the server(from root):
-
-`sudo node dist/server.js`
-
-- Run frontend
-
-`cd etf-frontend`
+- Install server dependencies:
 
 `npm install`
 
+- Fetch Historical Data
+The fetchData.js script downloads historical data for SOXL and SOXS from Yahoo Finance and saves it in JSON format.
+
+Run the following command in the terminal to fetch the data
+
+`sudo node fetchData.js`
+
+### Run the Server
+
+- From the root directory
+
+`sudo node dist/server.js`
+
+### Run the Frontend
+
+- Change to the frontend directory and start the frontend server:
+
+`cd etf-frontend`
 `npm start`
 
 ### Access the application
