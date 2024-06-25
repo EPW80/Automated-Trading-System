@@ -1,10 +1,12 @@
-// import the required modules
+// src/adapters/JSONDataAccess.ts
+
 import axios from "axios";
 import fs from "fs";
 import path from "path";
 import { MarketDataEntry } from "./IDataAccess"; // Import the MarketDataEntry interface
+import { pubSub } from "../pubsub/PubSub.js"; // Import the pubsub instance
 
-// define a class that implements the IDataAccess interface
+// Define a class that implements the IDataAccess interface
 export class JSONDataAccess {
   private data: { [key: string]: MarketDataEntry[] } = {};
   private readonly filePath: string;
@@ -52,6 +54,7 @@ export class JSONDataAccess {
     if (!this.data[symbol]) {
       this.data[symbol] = await this.fetchData(symbol);
       this.saveDataToFile();
+      pubSub.publish("dataChanged", { symbol, data: this.data[symbol] });
     }
     return this.data[symbol];
   }
@@ -69,6 +72,7 @@ export class JSONDataAccess {
         this.data[ticker] = await this.fetchData(ticker);
       }
       this.saveDataToFile();
+      pubSub.publish("dataChanged", { tickers, data: this.data });
       console.log("Data successfully saved to data.json");
     } catch (error) {
       console.error("Failed to fetch and save data:", error);

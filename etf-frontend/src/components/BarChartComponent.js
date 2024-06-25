@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
 import {
   Chart as ChartJS,
   BarElement,
@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { pubSub } from "../pubsub/PubSub.js";
 
 // Register the necessary components with Chart.js
 ChartJS.register(
@@ -21,7 +22,9 @@ ChartJS.register(
   Legend
 );
 
-const BarChartComponent = ({ data }) => {
+const BarChartComponent = () => {
+  const [chartData, setChartData] = useState([]);
+
   const chartRef = useRef(null); // Reference to the canvas element
   const chartInstanceRef = useRef(null); // Reference to the chart instance
 
@@ -30,11 +33,11 @@ const BarChartComponent = ({ data }) => {
     return {
       type: "bar", // Define the chart type
       data: {
-        labels: data.map((entry) => entry.date), // Map dates for x-axis labels
+        labels: chartData.map((entry) => entry.date), // Map dates for x-axis labels
         datasets: [
           {
             label: "Volume", // Label for the dataset
-            data: data.map((entry) => entry.volume), // Map volume data for y-axis
+            data: chartData.map((entry) => entry.volume), // Map volume data for y-axis
             backgroundColor: "rgba(75, 192, 192, 0.2)", // Bar color
             borderColor: "rgba(75, 192, 192, 1)", // Border color
             borderWidth: 1, // Border width
@@ -48,7 +51,7 @@ const BarChartComponent = ({ data }) => {
         maintainAspectRatio: false, // Ensures the chart fills the container
         animation: {
           duration: 1000, // Animation duration in milliseconds
-          easing: 'easeOutBounce', // Easing function for the animation
+          easing: "easeOutBounce", // Easing function for the animation
         },
         plugins: {
           title: {
@@ -119,13 +122,13 @@ const BarChartComponent = ({ data }) => {
           },
         },
         hover: {
-          mode: 'nearest', // Highlight the nearest data point
+          mode: "nearest", // Highlight the nearest data point
           intersect: true, // Only trigger when hovering directly over a point
           animationDuration: 400, // Hover animation duration
         },
       },
     };
-  }, [data]);
+  }, [chartData]);
 
   useEffect(() => {
     if (!chartRef.current) return; // If chartRef is not set, do nothing
@@ -143,6 +146,20 @@ const BarChartComponent = ({ data }) => {
       }
     };
   }, [chartConfig]); // Re-run effect when chartConfig changes
+
+  useEffect(() => {
+    // Subscribe to data changes
+    const handleDataChange = (data) => {
+      setChartData(data.data);
+    };
+
+    pubSub.subscribe("dataChanged", handleDataChange);
+
+    // Cleanup subscription on component unmount
+    return () => {
+      pubSub.unsubscribe("dataChanged", handleDataChange);
+    };
+  }, []);
 
   return (
     <div className="chart-container">

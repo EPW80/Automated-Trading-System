@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { JSONDataAccess } from "./adapters/JSONDataAccess";
+import { JSONDataAccess } from "./adapters/JSONDataAccess.js";
 const tickers = ["SOXL", "SOXS"];
 const jsonDataAccess = new JSONDataAccess();
 (() => __awaiter(void 0, void 0, void 0, function* () {

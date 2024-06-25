@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ETFSymbolSelector from "./components/ETFSymbolSelector";
 import ChartComponent from "./components/ChartComponent";
 import BarChartComponent from "./components/BarChartComponent";
 import BacktestingResults from "./components/BacktestingResults";
+import { pubSub } from "./pubsub/PubSub"; // Correct import path
 import "./App.css";
 import axios from "axios";
 
@@ -23,6 +24,18 @@ const App = () => {
       console.error("Error running backtest", error);
     }
   };
+
+  useEffect(() => {
+    const handleDataChanged = ({ data }) => {
+      setChartData(data);
+    };
+
+    pubSub.subscribe("dataChanged", handleDataChanged);
+
+    return () => {
+      pubSub.unsubscribe("dataChanged", handleDataChanged);
+    };
+  }, []);
 
   return (
     <div className="App">

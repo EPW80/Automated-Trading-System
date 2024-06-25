@@ -1,3 +1,4 @@
+// src/adapters/JSONDataAccess.ts
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,11 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// import the required modules
 import axios from "axios";
 import fs from "fs";
 import path from "path";
-// define a class that implements the IDataAccess interface
+import { pubSub } from "../pubsub/PubSub.js"; // Import the pubsub instance
+// Define a class that implements the IDataAccess interface
 export class JSONDataAccess {
     constructor() {
         this.data = {};
@@ -53,6 +54,7 @@ export class JSONDataAccess {
             if (!this.data[symbol]) {
                 this.data[symbol] = yield this.fetchData(symbol);
                 this.saveDataToFile();
+                pubSub.publish("dataChanged", { symbol, data: this.data[symbol] });
             }
             return this.data[symbol];
         });
@@ -70,6 +72,7 @@ export class JSONDataAccess {
                     this.data[ticker] = yield this.fetchData(ticker);
                 }
                 this.saveDataToFile();
+                pubSub.publish("dataChanged", { tickers, data: this.data });
                 console.log("Data successfully saved to data.json");
             }
             catch (error) {

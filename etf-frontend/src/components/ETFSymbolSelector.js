@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { pubSub } from "../pubsub/PubSub.js";
 import "../App.css"; // Import the CSS file
 
-// ETFSymbolSelector component to allow users to select ETF symbols and date ranges
-const ETFSymbolSelector = ({ setChartData }) => {
+const ETFSymbolSelector = () => {
   // State variables to manage form inputs and loading/error states
   const [symbol, setSymbol] = useState("SOXL");
   const [startDate, setStartDate] = useState("");
@@ -24,7 +24,9 @@ const ETFSymbolSelector = ({ setChartData }) => {
         startDate,
         endDate,
       });
-      setChartData(response.data); // Set the fetched data to the chart data
+
+      // Publish data changes using pubSub
+      pubSub.publish("dataChanged", { symbol, data: response.data });
     } catch (error) {
       // Handle any errors that occur during data fetching
       setError("Failed to fetch data. Please try again.");

@@ -13,6 +13,7 @@ import Chart from "chart.js/auto";
 import "chartjs-adapter-date-fns";
 import { JSONDataAccess } from "./adapters/JSONDataAccess.js";
 import { JSONDataAdapter } from "./adapters/JSONDataAdapter.js";
+import { pubSub } from "./pubsub/PubSub.js";
 const jsonDataAccess = new JSONDataAccess();
 const dataAccess = new JSONDataAdapter(jsonDataAccess);
 // Main function to run the program
@@ -20,14 +21,12 @@ function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const inquirer = yield import("inquirer");
         // Prompt the user to select a symbol
-        const { symbol } = yield inquirer.default.prompt([
-            {
-                type: "list",
-                name: "symbol",
-                message: "Choose the symbol",
-                choices: ["SOXL", "SOXS"],
-            },
-        ]);
+        const { symbol } = yield inquirer.default.prompt({
+            type: "list",
+            name: "symbol",
+            message: "Choose the symbol",
+            choices: ["SOXL", "SOXS"],
+        });
         console.log(`You selected: ${symbol}`);
         console.log(`Description: ${symbol} is an ETF focused on semiconductor companies with 3x leverage.`);
         const recentData = yield dataAccess.request(symbol);
@@ -35,18 +34,14 @@ function main() {
         const prevEntry = recentData[recentData.length - 2];
         console.log(`Most recent date: ${lastEntry.date}`);
         console.log(`Most recent price: ${lastEntry.close}`);
-        const percentageChange = ((parseFloat(lastEntry.close) - parseFloat(prevEntry.close)) /
-            parseFloat(prevEntry.close)) *
-            100;
+        const percentageChange = ((parseFloat(lastEntry.close) - parseFloat(prevEntry.close)) / parseFloat(prevEntry.close)) * 100;
         console.log(`Percentage change from previous date: ${percentageChange.toFixed(2)}%`);
         // Prompt the user to decide if they want to generate a graph
-        const { generateGraph } = yield inquirer.default.prompt([
-            {
-                type: "confirm",
-                name: "generateGraph",
-                message: "Would you like to generate a price graph?",
-            },
-        ]);
+        const { generateGraph } = yield inquirer.default.prompt({
+            type: "confirm",
+            name: "generateGraph",
+            message: "Would you like to generate a price graph?",
+        });
         if (generateGraph) {
             // Prompt the user to enter the start and end dates for the graph
             const { startDate, endDate } = yield inquirer.default.prompt([
@@ -54,20 +49,16 @@ function main() {
                     type: "input",
                     name: "startDate",
                     message: "Enter the start date (YYYY-MM-DD):",
-                    validate: (input) => /\d{4}-\d{2}-\d{2}/.test(input)
-                        ? true
-                        : "Invalid date format. Use YYYY-MM-DD.",
+                    validate: (input) => (/\d{4}-\d{2}-\d{2}/.test(input) ? true : "Invalid date format. Use YYYY-MM-DD."),
                 },
                 {
                     type: "input",
                     name: "endDate",
                     message: "Enter the end date (YYYY-MM-DD):",
-                    validate: (input) => /\d{4}-\d{2}-\d{2}/.test(input)
-                        ? true
-                        : "Invalid date format. Use YYYY-MM-DD.",
+                    validate: (input) => (/\d{4}-\d{2}-\d{2}/.test(input) ? true : "Invalid date format. Use YYYY-MM-DD."),
                 },
             ]);
-            generateChart(symbol, startDate, endDate);
+            yield generateChart(symbol, startDate, endDate);
         }
     });
 }
@@ -181,4 +172,10 @@ function generateChart(symbol, startDate, endDate) {
         console.log("Price graph saved as chart.png");
     });
 }
+// Subscribe to data changes and regenerate the chart when data changes
+pubSub.subscribe("dataChanged", ({ symbol, data }) => __awaiter(void 0, void 0, void 0, function* () {
+    const startDate = data[0].date;
+    const endDate = data[data.length - 1].date;
+    yield generateChart(symbol, startDate, endDate);
+}));
 main();

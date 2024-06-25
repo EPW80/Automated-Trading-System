@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
 import {
   Chart as ChartJS,
   LineElement,
@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { pubSub } from "../pubsub/PubSub.js";
 
 // Register the necessary components with Chart.js
 ChartJS.register(
@@ -23,9 +24,22 @@ ChartJS.register(
   Legend
 );
 
-const ChartComponent = ({ data }) => {
+const ChartComponent = () => {
+  const [data, setData] = useState([]);
   const chartRef = useRef(null); // Reference to the canvas element
   const chartInstanceRef = useRef(null); // Reference to the chart instance
+
+  // Subscribe to data changes
+  useEffect(() => {
+    const handleDataChanged = ({ data }) => {
+      setData(data);
+    };
+    pubSub.subscribe("dataChanged", handleDataChanged);
+
+    return () => {
+      pubSub.unsubscribe("dataChanged", handleDataChanged);
+    };
+  }, []);
 
   // Memoize the chart configuration to avoid unnecessary re-renders
   const chartConfig = useMemo(() => {
