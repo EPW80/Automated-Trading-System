@@ -11,5 +11,11 @@ import { JSONDataAccess } from "./adapters/JSONDataAccess.js";
 const tickers = ["SOXL", "SOXS"];
 const jsonDataAccess = new JSONDataAccess();
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    yield jsonDataAccess.fetchAndSaveData(tickers);
+    try {
+        yield jsonDataAccess.fetchAndSaveData(tickers);
+        console.log("Data fetching and saving completed successfully.");
+    }
+    catch (error) {
+        console.error("An error occurred while fetching and saving data:", error);
+    }
 }))();

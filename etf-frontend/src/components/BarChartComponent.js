@@ -49,7 +49,7 @@ const BarChartComponent = () => {
         responsive: true,
         maintainAspectRatio: false,
         animation: {
-          duration: 1000,
+          duration: 2000,
           easing: "easeOutBounce",
         },
         plugins: {

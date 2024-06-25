@@ -5,6 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "fetch-data": "node dist/fetchData.js",
+    "start": "npm run fetch-data && node dist/server.js",
     "test": "jest"
   },
   "keywords": [],

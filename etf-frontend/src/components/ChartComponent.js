@@ -66,7 +66,7 @@ const ChartComponent = () => {
         responsive: true,
         maintainAspectRatio: false, // Ensures the chart fills the container
         animation: {
-          duration: 1000, // Animation duration in milliseconds
+          duration: 2000, // Animation duration in milliseconds
           easing: "easeOutBounce", // Easing function for the animation
         },
         hover: {
