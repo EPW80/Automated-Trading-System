@@ -37,10 +37,10 @@ const BarChartComponent = () => {
           {
             label: "Volume",
             data: chartData.map((entry) => entry.volume),
-            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            backgroundColor: "rgba(75, 192, 192, 0.6)", // Darker color for better visibility
             borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1,
-            hoverBackgroundColor: "rgba(75, 192, 192, 0.4)",
+            borderWidth: 2, // Thicker border
+            hoverBackgroundColor: "rgba(75, 192, 192, 0.8)", // Darker hover color
             hoverBorderColor: "rgba(75, 192, 192, 1)",
           },
         ],
@@ -57,13 +57,15 @@ const BarChartComponent = () => {
             display: true,
             text: "Volume Chart",
             font: {
-              size: 18,
+              size: 22, // Larger font size
               family: "'Roboto', sans-serif",
               weight: "bold",
             },
             color: "#333",
           },
           tooltip: {
+            backgroundColor: "rgba(0,0,0,0.8)", // Darker tooltip background
+            bodyColor: "#fff", // White text color in tooltip
             callbacks: {
               label: (context) => {
                 let label = context.dataset.label || "";
@@ -80,7 +82,7 @@ const BarChartComponent = () => {
             position: "top",
             labels: {
               font: {
-                size: 14,
+                size: 16,
                 family: "'Roboto', sans-serif",
               },
               color: "#333",
@@ -101,6 +103,8 @@ const BarChartComponent = () => {
             },
             ticks: {
               color: "#333",
+              maxRotation: 45, // Rotate labels for better readability
+              minRotation: 45,
             },
           },
           y: {
@@ -123,7 +127,7 @@ const BarChartComponent = () => {
         hover: {
           mode: "nearest",
           intersect: true,
-          animationDuration: 400,
+          animationDuration: 500, // Faster hover animation
         },
       },
     };

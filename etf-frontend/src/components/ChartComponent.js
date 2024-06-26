@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { pubSub } from "../pubsub/PubSub.js";
+import { calculateSMA, calculateFMA } from "./chartUtils.js"; // Adjust the import path as necessary
 
 // Register the necessary components with Chart.js
 ChartJS.register(
@@ -43,6 +44,9 @@ const ChartComponent = () => {
 
   // Memoize the chart configuration to avoid unnecessary re-renders
   const chartConfig = useMemo(() => {
+    const sma10 = calculateSMA(data, 10);
+    const fma50 = calculateFMA(data, 50);
+
     return {
       type: "line", // Define the chart type
       data: {
@@ -53,12 +57,39 @@ const ChartComponent = () => {
             data: data.map((entry) => entry.close), // Map closing prices for y-axis data
             borderColor: "rgba(75, 192, 192, 1)", // Line color
             backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color under the line
-            borderWidth: 2, // Line width
-            pointRadius: 3, // Radius of the data points
-            pointBackgroundColor: "rgba(75, 192, 192, 1)", // Data point color
-            pointBorderColor: "#fff", // Border color of the data points
+            borderWidth: 3, // Line width
+            // pointRadius: 4, // Radius of the data points
+            // pointHoverRadius: 6, // Increase point radius on hover
+            // pointBackgroundColor: "rgba(75, 192, 192, 1)", // Data point color
+            // pointBorderColor: "#fff", // Border color of the data points
             fill: true, // Fill the area under the line
             tension: 0.4, // Smooths the line
+          },
+          {
+            label: "SMA",
+            data: sma10,
+            borderColor: "rgba(255, 99, 132, 1)",
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderWidth: 3, // Increase line width
+            // pointRadius: 4, // Increase point radius
+            // pointHoverRadius: 6, // Increase point radius on hover
+            // pointBackgroundColor: "rgba(255, 99, 132, 1)",
+            // pointBorderColor: "#fff",
+            fill: false,
+            spanGaps: true, // Ensure the line spans null values
+          },
+          {
+            label: "FMA",
+            data: fma50,
+            borderColor: "rgba(54, 162, 235, 1)",
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+            borderWidth: 3, // Increase line width
+            // pointRadius: 4, // Increase point radius
+            // pointHoverRadius: 6, // Increase point radius on hover
+            // pointBackgroundColor: "rgba(54, 162, 235, 1)",
+            // pointBorderColor: "#fff",
+            fill: false,
+            spanGaps: true, // line spans null values
           },
         ],
       },
@@ -79,7 +110,7 @@ const ChartComponent = () => {
             display: true,
             text: "Price Chart", // Chart title
             font: {
-              size: 18,
+              size: 20,
               family: "'Roboto', sans-serif",
               weight: "bold",
             },
@@ -102,7 +133,7 @@ const ChartComponent = () => {
             position: "top",
             labels: {
               font: {
-                size: 14,
+                size: 16,
                 family: "'Roboto', sans-serif",
               },
               color: "#333", // Legend color
