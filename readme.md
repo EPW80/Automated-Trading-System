@@ -26,9 +26,11 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 - Clone the repository:
 
 `git clone <repository_url>`
+
 `cd ETF`
 
 - Install root folder dependencies:
+
 `npm install`
 
 ### Run the Server and fetch data
@@ -42,7 +44,9 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 - Change to the frontend directory and start the frontend server:
 
 `cd etf-frontend`
+
 `npm install` // dependencies for the frontend
+
 `npm start`
 
 ### Access the application
