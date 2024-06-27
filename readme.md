@@ -28,28 +28,21 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 `git clone <repository_url>`
 `cd ETF`
 
-- Install server dependencies:
-
+- Install root folder dependencies:
 `npm install`
 
-- Fetch Historical Data
-The fetchData.js script downloads historical data for SOXL and SOXS from Yahoo Finance and saves it in JSON format.
-
-Run the following command in the terminal to fetch the data
-
-`sudo node fetchData.js`
-
-### Run the Server
+### Run the Server and fetch data
 
 - From the root directory
 
-`sudo node dist/server.js`
+`npm start`
 
 ### Run the Frontend
 
 - Change to the frontend directory and start the frontend server:
 
 `cd etf-frontend`
+`npm install` // dependencies for the frontend
 `npm start`
 
 ### Access the application
