@@ -14,6 +14,54 @@ import "chartjs-adapter-date-fns";
 import { JSONDataAccess } from "./adapters/JSONDataAccess.js";
 import { JSONDataAdapter } from "./adapters/JSONDataAdapter.js";
 import { pubSub } from "./pubsub/PubSub.js";
+// Function to calculate Simple Moving Average (SMA)
+export function calculateSMA(data, windowSize) {
+    if (!data || data.length < windowSize)
+        return [];
+    let sum = 0;
+    const sma = new Array(windowSize - 1).fill(null); // Fill the initial array with nulls
+    // Calculate the sum for the first window
+    for (let i = 0; i < windowSize; i++) {
+        if (data[i] && data[i].close !== undefined) {
+            sum += parseFloat(data[i].close);
+        }
+        else {
+            return [];
+        }
+    }
+    sma.push(sum / windowSize);
+    // Calculate the rest using a rolling sum
+    for (let i = windowSize; i < data.length; i++) {
+        if (data[i] &&
+            data[i].close !== undefined &&
+            data[i - windowSize] &&
+            data[i - windowSize].close !== undefined) {
+            sum -= parseFloat(data[i - windowSize].close);
+            sum += parseFloat(data[i].close);
+            sma.push(sum / windowSize);
+        }
+        else {
+            return [];
+        }
+    }
+    return sma;
+}
+// Function to calculate Flexible Moving Average (FMA)
+export function calculateFMA(data, windowSize) {
+    if (!data || data.length === 0)
+        return [];
+    const alpha = 2 / (windowSize + 1);
+    let fma = [parseFloat(data[0].close)]; // Initialize with the first close value
+    for (let i = 1; i < data.length; i++) {
+        if (data[i] && data[i].close !== undefined) {
+            fma.push(alpha * parseFloat(data[i].close) + (1 - alpha) * fma[i - 1]);
+        }
+        else {
+            return [];
+        }
+    }
+    return fma;
+}
 const jsonDataAccess = new JSONDataAccess();
 const dataAccess = new JSONDataAdapter(jsonDataAccess);
 // Main function to run the program
@@ -75,6 +123,8 @@ function generateChart(symbol, startDate, endDate) {
             new Date(entry.date) <= new Date(endDate));
         const dates = marketData.map((entry) => entry.date);
         const prices = marketData.map((entry) => parseFloat(entry.close)); // Ensure prices are numbers
+        const sma10 = calculateSMA(marketData, 10);
+        const sma50 = calculateSMA(marketData, 50);
         const canvas = createCanvas(800, 400);
         const ctx = canvas.getContext("2d");
         new Chart(canvas, {
@@ -91,6 +141,24 @@ function generateChart(symbol, startDate, endDate) {
                         pointRadius: 3,
                         pointBackgroundColor: "rgba(75, 192, 192, 1)",
                         pointBorderColor: "#fff",
+                    },
+                    {
+                        label: "10-period SMA",
+                        data: sma10,
+                        borderColor: "rgba(255, 99, 132, 1)",
+                        backgroundColor: "rgba(255, 99, 132, 0.2)",
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                    },
+                    {
+                        label: "50-period SMA",
+                        data: sma50,
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        backgroundColor: "rgba(54, 162, 235, 0.2)",
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
                     },
                 ],
             },

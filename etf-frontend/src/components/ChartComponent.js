@@ -11,7 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { pubSub } from "../pubsub/PubSub.js";
-import { calculateSMA, calculateFMA } from "./chartUtils.js"; // Adjust the import path as necessary
+import { calculateSMA, calculateFMA } from "./chartUtils.js";
 
 // Register the necessary components with Chart.js
 ChartJS.register(
@@ -66,7 +66,7 @@ const ChartComponent = () => {
             tension: 0.4, // Smooths the line
           },
           {
-            label: "SMA",
+            label: "SMA10",
             data: sma10,
             borderColor: "rgba(255, 99, 132, 1)",
             backgroundColor: "rgba(255, 99, 132, 0.2)",
@@ -79,7 +79,7 @@ const ChartComponent = () => {
             spanGaps: true, // Ensure the line spans null values
           },
           {
-            label: "FMA",
+            label: "SMA50",
             data: fma50,
             borderColor: "rgba(54, 162, 235, 1)",
             backgroundColor: "rgba(54, 162, 235, 0.2)",
