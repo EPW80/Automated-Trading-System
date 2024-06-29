@@ -162,9 +162,9 @@ async function generateChart(symbol: string, startDate: string, endDate: string)
           borderColor: "rgba(75, 192, 192, 1)",
           backgroundColor: "rgba(75, 192, 192, 0.2)", // Add background color for better visualization
           borderWidth: 2, // Increase the border width for better visibility
-          pointRadius: 3,
-          pointBackgroundColor: "rgba(75, 192, 192, 1)",
-          pointBorderColor: "#fff",
+          // pointRadius: 3,
+          // pointBackgroundColor: "rgba(75, 192, 192, 1)",
+          // pointBorderColor: "#fff",
         },
         {
           label: "10-period SMA",
@@ -172,7 +172,7 @@ async function generateChart(symbol: string, startDate: string, endDate: string)
           borderColor: "rgba(255, 99, 132, 1)",
           backgroundColor: "rgba(255, 99, 132, 0.2)",
           borderWidth: 2,
-          pointRadius: 0,
+          // pointRadius: 0,
           fill: false,
         },
         {
@@ -181,7 +181,7 @@ async function generateChart(symbol: string, startDate: string, endDate: string)
           borderColor: "rgba(54, 162, 235, 1)",
           backgroundColor: "rgba(54, 162, 235, 0.2)",
           borderWidth: 2,
-          pointRadius: 0,
+          // pointRadius: 0,
           fill: false,
         },
       ],

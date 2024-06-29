@@ -12,7 +12,10 @@ node_modules/
 *.swp
 
 # Data files
+*.png
+*.csv
 
 
 # TypeScript build directories
-build/
+ocp/
+srp/
