@@ -27,7 +27,7 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 
 `git clone <repository_url>`
 
-`cd ETF`
+`cd <Project>`
 
 - Install root folder dependencies:
 
