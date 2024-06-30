@@ -82,4 +82,4 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 
 ### Demo
 
-[Application Demo](https://www.loom.com/share/fdb1b7600b8d4d45894891094199fed7?sid=94b14971-e4af-4357-b710-14a7eb21532a)
+[Application Demo](https://www.loom.com/share/b96db893c6994431aecddb1d5335dbe0?sid=c2914ece-64b4-4da4-858d-79d8643aa3a6)
