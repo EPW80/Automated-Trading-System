@@ -7,10 +7,15 @@ If the majority of these holdings are up, SOXL will rise, while SOXS will fall, 
 ## Features
 
 - Automated Trading Strategy: Implements a Simple Moving Average (SMA) crossover strategy for trading SOXL and SOXS.
+
 - Data Fetching: Fetches historical data for SOXL and SOXS from Yahoo Finance.
+
 - Backtesting: Evaluates the performance of the trading strategy through backtesting.
+
 - Interactive Frontend: Provides a user-friendly interface for selecting symbols, viewing data, and running backtests.
+
 - Graphical Visualization: Displays price charts for the selected ETFs over a specified date range.
+
 - Publisher-Subscriber Pattern: Implements the Pub/Sub pattern to update the user interface with new data dynamically.
 
 ## Installation
