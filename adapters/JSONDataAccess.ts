@@ -1,8 +1,8 @@
 import axios from "axios";
 import fs from "fs";
 import path from "path";
-import { MarketDataEntry } from "./IDataAccess"; // Import the MarketDataEntry interface
-import { pubSub } from "../pubsub/PubSub.js"; // Import the pubsub instance
+import { MarketDataEntry } from "./IDataAccess";
+import { pubSub } from "../pubsub/PubSub.js";
 
 // Define a class that implements the IDataAccess interface
 export class JSONDataAccess {
